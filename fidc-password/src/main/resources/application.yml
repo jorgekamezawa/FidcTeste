@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: fidc-password
+
+  profiles:
+    active: local
+
+  # Redis Configuration
+  data:
+    redis:
+      timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+server:
+  port: 8080
+
+# Feign Global Configuration
+feign:
+  client:
+    config:
+      default:
+        logger-level: basic
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  info:
+    env:
+      enabled: true
+
+# OpenAPI/Swagger Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+    try-it-out-enabled: true

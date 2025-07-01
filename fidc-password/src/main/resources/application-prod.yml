@@ -1,0 +1,95 @@
+spring:
+  # Redis Production Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+      database: ${REDIS_DATABASE:0}
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:false}
+
+# Security Headers
+server:
+  forward-headers-strategy: framework
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+
+# External APIs Configuration
+external-apis:
+  sistema-core:
+    base-url: ${SISTEMA_CORE_URL}
+    timeout: ${SISTEMA_CORE_TIMEOUT:10s}
+    api-key: ${SISTEMA_CORE_API_KEY:}
+    retry:
+      max-attempts: ${SISTEMA_CORE_RETRY_MAX:3}
+      delay: ${SISTEMA_CORE_RETRY_DELAY:2s}
+
+  banking-ticket:
+    base-url: ${BANKING_TICKET_URL}
+    timeout: ${BANKING_TICKET_TIMEOUT:15s}
+    api-key: ${BANKING_TICKET_API_KEY:}
+    retry:
+      max-attempts: ${BANKING_TICKET_RETRY_MAX:3}
+      delay: ${BANKING_TICKET_RETRY_DELAY:3s}
+
+  active-directory:
+    base-url: ${ACTIVE_DIRECTORY_URL}
+    timeout: ${ACTIVE_DIRECTORY_TIMEOUT:20s}
+    username: ${AD_USERNAME}
+    password: ${AD_PASSWORD}
+    retry:
+      max-attempts: ${AD_RETRY_MAX:2}
+      delay: ${AD_RETRY_DELAY:5s}
+
+# Feign Production Configuration
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 10000
+        logger-level: basic
+      sistema-core:
+        url: ${SISTEMA_CORE_URL}
+      banking-ticket:
+        url: ${BANKING_TICKET_URL}
+      active-directory:
+        url: ${ACTIVE_DIRECTORY_URL}
+
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+
+# Production Logging
+logging:
+  level:
+    com.fidc.password: INFO
+    org.springframework.web: WARN
+    org.springframework.cloud.openfeign: WARN
+    org.springframework.data.redis: WARN
+
+# Redis State Configuration (First Access Flow)
+fidc:
+  password:
+    redis:
+      first-access:
+        ttl-minutes: ${FIRST_ACCESS_TTL_MINUTES:10}
+        key-prefix: ${FIRST_ACCESS_KEY_PREFIX:first_access}
+      retry:
+        max-attempts: ${REDIS_RETRY_MAX:3}
+        backoff-delay: ${REDIS_RETRY_DELAY:1000}
+
+    # Security Settings
+    security:
+      max-login-attempts: ${MAX_LOGIN_ATTEMPTS:3}
+      lockout-duration-minutes: ${LOCKOUT_DURATION:15}
+
+    # Active Directory Settings
+    active-directory:
+      username-pattern: ${AD_USERNAME_PATTERN:{origin}_{cpf}}
+      domain: ${AD_DOMAIN}
+      base-dn: ${AD_BASE_DN}

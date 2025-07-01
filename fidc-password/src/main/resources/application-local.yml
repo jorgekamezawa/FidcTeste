@@ -1,0 +1,68 @@
+spring:
+  # Redis Local Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+
+# External APIs Configuration
+external-apis:
+  sistema-core:
+    base-url: http://localhost:8081
+    timeout: 10s
+    retry:
+      max-attempts: 3
+      delay: 1s
+
+  banking-ticket:
+    base-url: http://localhost:8082
+    timeout: 15s
+    retry:
+      max-attempts: 3
+      delay: 2s
+
+  active-directory:
+    base-url: http://localhost:8083
+    timeout: 20s
+    retry:
+      max-attempts: 2
+      delay: 3s
+
+# Feign Development Configuration
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 10000
+        logger-level: full
+      sistema-core:
+        url: http://localhost:8081
+      banking-ticket:
+        url: http://localhost:8082
+      active-directory:
+        url: http://localhost:8083
+
+# Actuator - Development
+management:
+  endpoint:
+    health:
+      show-details: always
+
+# Logging Configuration
+logging:
+  level:
+    com.fidc.password: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    org.springframework.data.redis: DEBUG
+    feign: DEBUG
+
+# Redis State Configuration (First Access Flow)
+fidc:
+  password:
+    redis:
+      first-access:
+        ttl-minutes: 10
+        key-prefix: "first_access"
