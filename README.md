@@ -180,7 +180,8 @@ Por questões de segurança, a maioria dos erros de validação técnica retorna
     "isFirstAccess": true,
     "userEmail": "joao.silva@gmail.com",
     "userFullName": "João Silva Santos",
-    "birthDate": "1985-03-15"
+    "userBirthDate": "1985-03-15",
+    "userPhoneNumber": "11957753776"
 }
 ```
 
